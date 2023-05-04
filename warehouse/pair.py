@@ -4,6 +4,8 @@ class Pair:
         self.cell2 = cell2
         self.value = 0
         # TODO?
+        # calcular a distancia entre cell1 e cell2
+
 
     def hash(self):
         return str(self.cell1.line) + "_" + str(self.cell1.column) + "_" + str(

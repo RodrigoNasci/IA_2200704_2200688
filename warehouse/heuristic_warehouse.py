@@ -13,5 +13,5 @@ class HeuristicWarehouse(Heuristic[WarehouseProblemSearch, WarehouseState]):
         pass
 
     def __str__(self):
-        return "# TODO"
+        return "Distance between pairs"             # TODO
 
