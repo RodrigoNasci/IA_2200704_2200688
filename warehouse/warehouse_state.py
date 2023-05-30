@@ -35,27 +35,19 @@ class WarehouseState(State[Action]):
 
     def can_move_up(self) -> bool:
         # TODO
-        return self.line_forklift != 0 and self.matrix[self.line_forklift - 1][
-            self.column_forklift] == constants.SHELF and self.matrix[self.line_forklift - 1][
-            self.column_forklift] == constants.PRODUCT
+        return self.line_forklift != 0 and self.matrix[self.line_forklift - 1][self.column_forklift] != constants.SHELF and self.matrix[self.line_forklift - 1][self.column_forklift] != constants.PRODUCT
 
     def can_move_right(self) -> bool:
         # TODO
-        return self.column_forklift != self.columns - 1 and self.matrix[self.line_forklift][
-            self.column_forklift + 1] != constants.SHELF and self.matrix[self.line_forklift][
-            self.column_forklift + 1] != constants.PRODUCT
+        return self.column_forklift != self.columns - 1 and self.matrix[self.line_forklift][self.column_forklift + 1] != constants.SHELF and self.matrix[self.line_forklift][self.column_forklift + 1] != constants.PRODUCT
 
     def can_move_down(self) -> bool:
         # TODO
-        return self.line_forklift != self.rows - 1 and self.matrix[self.line_forklift + 1][
-            self.column_forklift] != constants.SHELF and self.matrix[self.line_forklift + 1][
-            self.column_forklift] != constants.PRODUCT
+        return self.line_forklift != self.rows - 1 and self.matrix[self.line_forklift + 1][self.column_forklift] != constants.SHELF and self.matrix[self.line_forklift + 1][self.column_forklift] != constants.PRODUCT
 
     def can_move_left(self) -> bool:
         # TODO
-        return self.column_forklift != 0 and self.matrix[self.line_forklift][
-            self.column_forklift - 1] != constants.SHELF and self.matrix[self.line_forklift][
-            self.column_forklift - 1] != constants.PRODUCT
+        return self.column_forklift != 0 and self.matrix[self.line_forklift][self.column_forklift - 1] != constants.SHELF and self.matrix[self.line_forklift][self.column_forklift - 1] != constants.PRODUCT
 
     def move_up(self) -> None:
         # TODO

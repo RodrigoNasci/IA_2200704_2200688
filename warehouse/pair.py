@@ -2,7 +2,9 @@ class Pair:
     def __init__(self, cell1, cell2):
         self.cell1 = cell1
         self.cell2 = cell2
-        self.value = abs(self.cell1.line - self.cell2.line) + abs(self.cell1.column - self.cell2.column)
+        self.value = 4
+        print(abs(self.cell1.line - self.cell2.line) + abs(self.cell1.column - self.cell2.column)) #isto e o que devia estar
+
         # TODO?
         # calcular a distancia entre cell1 e cell2
 
