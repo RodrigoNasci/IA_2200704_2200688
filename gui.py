@@ -639,7 +639,7 @@ class SearchSolver(threading.Thread):
 
         solution = self.agent.solve_problem(problem)
 
-        p.value = solution.cost(self)
+        p.value = solution.cost
 
         # se der 4 passo esta correto e é para avançar
         print(p.value)
