@@ -5,7 +5,6 @@ from numpy import ndarray
 import constants
 from agentsearch.state import State
 from agentsearch.action import Action
-from warehouse.cell import Cell
 
 
 class WarehouseState(State[Action]):
@@ -22,8 +21,6 @@ class WarehouseState(State[Action]):
         self.columns = columns
         self.matrix = np.full([self.rows, self.columns], fill_value=0, dtype=int)
 
-        self.current_cell: Cell = self.matrix[self.line_forklift, self.column_forklift]
-
         for i in range(self.rows):
             for j in range(self.columns):
                 self.matrix[i][j] = matrix[i][j]
@@ -36,47 +33,50 @@ class WarehouseState(State[Action]):
 
     def can_move_up(self) -> bool:
         # TODO
-        return self.line_forklift != 0 & self.matrix[self.line_forklift - 1][self.column_forklift] == constants.EMPTY
+        return self.line_forklift != 0 \
+            and self.matrix[self.line_forklift - 1][self.column_forklift] != constants.SHELF \
+            and self.matrix[self.line_forklift - 1][self.column_forklift] != constants.PRODUCT
 
     def can_move_right(self) -> bool:
         # TODO
-        return self.column_forklift != self.columns - 1 & \
-            (self.matrix[self.line_forklift][self.column_forklift + 1] == constants.EMPTY |
-             self.matrix[self.line_forklift][self.column_forklift + 1] == constants.EXIT)
+        return self.column_forklift != self.columns - 1 \
+            and self.matrix[self.line_forklift][self.column_forklift + 1] !=\
+            constants.SHELF and self.matrix[self.line_forklift][self.column_forklift + 1] != constants.PRODUCT
 
     def can_move_down(self) -> bool:
         # TODO
-        return self.line_forklift != self.rows - 1 & \
-            self.matrix[self.line_forklift + 1][self.column_forklift] == constants.EMPTY
+        return self.line_forklift != self.rows - 1 and self.matrix[self.line_forklift + 1][self.column_forklift] != \
+            constants.SHELF and self.matrix[self.line_forklift + 1][self.column_forklift] != constants.PRODUCT
 
     def can_move_left(self) -> bool:
         # TODO
-        return self.column_forklift != 0 & self.matrix[self.line_forklift][self.column_forklift - 1] == constants.EMPTY
+        return self.column_forklift != 0 and self.matrix[self.line_forklift][self.column_forklift - 1] != \
+            constants.SHELF and self.matrix[self.line_forklift][self.column_forklift - 1] != constants.PRODUCT
 
     def move_up(self) -> None:
         # TODO
-        self.current_cell = \
+        self.matrix[self.line_forklift][self.column_forklift] = \
             self.matrix[self.line_forklift - 1][self.column_forklift]
         self.line_forklift -= 1
         self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_right(self) -> None:
         # TODO
-        self.current_cell = \
+        self.matrix[self.line_forklift][self.column_forklift] = \
             self.matrix[self.line_forklift][self.column_forklift + 1]
         self.column_forklift += 1
         self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_down(self) -> None:
         # TODO
-        self.current_cell = \
+        self.matrix[self.line_forklift][self.column_forklift] = \
             self.matrix[self.line_forklift + 1][self.column_forklift]
         self.line_forklift += 1
         self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_left(self) -> None:
         # TODO
-        self.current_cell = \
+        self.matrix[self.line_forklift][self.column_forklift] = \
             self.matrix[self.line_forklift][self.column_forklift - 1]
         self.column_forklift -= 1
         self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
@@ -109,7 +109,8 @@ class WarehouseState(State[Action]):
 
     def __eq__(self, other):
         if isinstance(other, WarehouseState):
-            return np.array_equal(self.matrix, other.matrix)
+            return self.line_forklift == other.line_forklift \
+                and self.column_forklift == other.column_forklift
         return NotImplemented
 
     def __hash__(self):
