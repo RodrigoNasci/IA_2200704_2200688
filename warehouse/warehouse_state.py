@@ -5,6 +5,7 @@ from numpy import ndarray
 import constants
 from agentsearch.state import State
 from agentsearch.action import Action
+from warehouse.cell import Cell
 
 
 class WarehouseState(State[Action]):
@@ -20,6 +21,8 @@ class WarehouseState(State[Action]):
         self.rows = rows
         self.columns = columns
         self.matrix = np.full([self.rows, self.columns], fill_value=0, dtype=int)
+
+        self.current_cell: Cell = self.matrix[self.line_forklift, self.column_forklift]
 
         for i in range(self.rows):
             for j in range(self.columns):
@@ -52,28 +55,28 @@ class WarehouseState(State[Action]):
 
     def move_up(self) -> None:
         # TODO
-        self.matrix[self.line_forklift][self.column_forklift] = \
+        self.current_cell = \
             self.matrix[self.line_forklift - 1][self.column_forklift]
         self.line_forklift -= 1
         self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_right(self) -> None:
         # TODO
-        self.matrix[self.line_forklift][self.column_forklift] = \
+        self.current_cell = \
             self.matrix[self.line_forklift][self.column_forklift + 1]
         self.column_forklift += 1
         self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_down(self) -> None:
         # TODO
-        self.matrix[self.line_forklift][self.column_forklift] = \
+        self.current_cell = \
             self.matrix[self.line_forklift + 1][self.column_forklift]
         self.line_forklift += 1
         self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_left(self) -> None:
         # TODO
-        self.matrix[self.line_forklift][self.column_forklift] = \
+        self.current_cell = \
             self.matrix[self.line_forklift][self.column_forklift - 1]
         self.column_forklift -= 1
         self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT

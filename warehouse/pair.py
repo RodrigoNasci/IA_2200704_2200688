@@ -4,7 +4,6 @@ class Pair:
         self.cell2 = cell2
         self.value = 0
         # TODO?
-        # calcular a distancia entre cell1 e cell2
 
 
     def hash(self):
