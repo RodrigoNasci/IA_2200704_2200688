@@ -620,6 +620,45 @@ class SearchSolver(threading.Thread):
 
     def run(self):
         # TODO calculate pairs distances
+        for i in range(len(self.agent.pairs)):
+            p = self.agent.pairs[i]  # forklit para a celula 1
+
+            cell1 = copy.copy(p.cell1)
+            cell2 = copy.copy(p.cell2)
+            # alterar as coordenadas da cell1 se for diferente de um forklift
+
+            state = copy.copy(self.agent.initial_environment)
+            state.line_forklift = cell1.line
+            state.column_forklift = cell1.column
+
+            # altera as coordenadas da cell1
+            if state.matrix[cell1.line][cell1.column] != constants.FORKLIFT \
+                    and state.matrix[cell1.line][cell1.column] != constants.EXIT \
+                    and state.matrix[cell1.line][cell1.column] != constants.EMPTY:
+                if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
+                    state.column_forklift -= 1
+                else:
+                    state.column_forklift += 1
+
+            # altera as coordenadas da cell2
+            if state.matrix[cell2.line][cell2.column] != constants.FORKLIFT \
+                and state.matrix[cell2.line][cell2.column] != constants.EXIT \
+                    and state.matrix[cell2.line][cell2.column] != constants.EMPTY:
+                if state.matrix[cell2.line][cell2.column-1] == constants.EMPTY:
+                    cell2.column -= 1
+                else:
+                    cell2.column += 1
+
+            problem = WarehouseProblemSearch(state, cell2)
+
+            solution = self.agent.solve_problem(problem)
+
+            p.value = solution.cost
+            print(str(i) + "-" + str(p.value))
+
+        # Dar print para Problem Data
+        self.gui.text_problem.delete("1.0", "end")
+        self.gui.text_problem.insert(tk.END, str(self.gui.initial_state) + "\n" + str(self.gui.agent_search))
 
         # TODO calculate pairs
 

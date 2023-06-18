@@ -9,6 +9,8 @@ class WarehouseIndividual(IntVectorIndividual):
     def compute_fitness(self) -> float:
         # TODO
         return 0
+    # calcular os caminhos comlpletos percorridos pelos froklifts. Devolve uma lista de listas (as celulas percorridas por cada forklift)
+    # e o n max de passos necessarios para percorrer todos os caminhos (i.e, o n de celulas do caminho mais longo percorrido por um forklift)
 
     def obtain_all_path(self):
         # TODO
