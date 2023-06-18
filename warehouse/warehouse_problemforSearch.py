@@ -30,3 +30,4 @@ class WarehouseProblemSearch(Problem[WarehouseState]):
         # TODO
         return self.goal_position.line == state.line_forklift and self.goal_position.column == state.column_forklift
 
+

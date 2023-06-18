@@ -19,17 +19,19 @@ class WarehouseState(State[Action]):
 
         self.rows = rows
         self.columns = columns
-        self.matrix = np.full([self.rows, self.columns], fill_value=0, dtype=int)
 
-        for i in range(self.rows):
-            for j in range(self.columns):
-                self.matrix[i][j] = matrix[i][j]
-                if self.matrix[i][j] == constants.FORKLIFT:
-                    self.line_forklift = i
-                    self.column_forklift = j
-                if self.matrix[i][j] == constants.EXIT:
-                    self.line_exit = i
-                    self.column_exit = j
+        """
+        self.matrix = np.full([self.rows, self.columns], fill_value=0, dtype=int)
+        for j in range(self.columns):
+            self.matrix[i][j] = matrix[i][j]
+            if self.matrix[i][j] == constants.FORKLIFT:
+                self.line_forklift = i
+                self.column_forklift = j
+            if self.matrix[i][j] == constants.EXIT:
+                self.line_exit = i
+                self.column_exit = j 
+        """
+        self.matrix = matrix
 
     def can_move_up(self) -> bool:
         # TODO
@@ -55,31 +57,19 @@ class WarehouseState(State[Action]):
 
     def move_up(self) -> None:
         # TODO
-        self.matrix[self.line_forklift][self.column_forklift] = \
-            self.matrix[self.line_forklift - 1][self.column_forklift]
         self.line_forklift -= 1
-        self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_right(self) -> None:
         # TODO
-        self.matrix[self.line_forklift][self.column_forklift] = \
-            self.matrix[self.line_forklift][self.column_forklift + 1]
         self.column_forklift += 1
-        self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_down(self) -> None:
         # TODO
-        self.matrix[self.line_forklift][self.column_forklift] = \
-            self.matrix[self.line_forklift + 1][self.column_forklift]
         self.line_forklift += 1
-        self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def move_left(self) -> None:
         # TODO
-        self.matrix[self.line_forklift][self.column_forklift] = \
-            self.matrix[self.line_forklift][self.column_forklift - 1]
         self.column_forklift -= 1
-        self.matrix[self.line_forklift][self.column_forklift] = constants.FORKLIFT
 
     def get_cell_color(self, row: int, column: int) -> Color:
         if row == self.line_exit and column == self.column_exit and (

@@ -11,11 +11,11 @@ class HeuristicWarehouse(Heuristic[WarehouseProblemSearch, WarehouseState]):
 
     def compute(self, state: WarehouseState) -> float:
         # TODO
+
         # f(n) = g(n) + h(n)
         return abs(state.line_forklift - self._problem.goal_position.line) + abs(
             state.column_forklift - self._problem.goal_position.column)
         # para calcular a distancia em relação ao goal tem de ser apartir do line e colum fortklift
-
     def __str__(self):
         return "Distance between pairs"             # TODO
 

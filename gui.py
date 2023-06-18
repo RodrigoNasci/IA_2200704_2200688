@@ -660,6 +660,29 @@ class SearchSolver(threading.Thread):
         self.gui.text_problem.delete("1.0", "end")
         self.gui.text_problem.insert(tk.END, str(self.gui.initial_state) + "\n" + str(self.gui.agent_search))
 
+        # TODO calculate pairs
+
+        p = self.agent.pairs[0]  # forklit para a celula 1
+
+        cell1 = copy.copy(p.cell1)
+        cell2 = copy.copy(p.cell2)
+        # alterar as coordenadas da cell1 se for diferente de um forklift
+
+        state = copy.copy(self.agent.initial_environment)
+        state.line_forklift = cell1.line
+        state.column_forklift = cell1.column
+
+        # altera as coordenadas da cell2 se for diferente da porta
+        cell2.column -= 1
+        problem = WarehouseProblemSearch(state, cell2)
+
+        solution = self.agent.solve_problem(problem)
+
+        p.value = solution.cost
+
+        # se der 4 passo esta correto e é para avançar
+        print(p.value)
+
         self.agent.search_method.stopped=True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)
         self.gui.manage_buttons(data_set=tk.NORMAL, runSearch=tk.DISABLED, runGA=tk.NORMAL, stop=tk.DISABLED,
