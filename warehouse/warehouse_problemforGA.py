@@ -15,17 +15,26 @@ class WarehouseProblemGA(Problem):
 
     def generate_individual(self) -> "WarehouseIndividual":
         # TODO
+
         warehouse = WarehouseIndividual(self, 0)
-        for forkl in self.forklifts:
-            gene = [forkl]
-            produtosList = self.products.copy()
+        produtosList = self.products.copy()
+        for i in range(len(produtosList)):
+            gene = [self.forklifts[0]]
             random.shuffle(produtosList)
             for produto in produtosList:
                 gene.append(produto)
             warehouse.genome.append(gene)
-        warehouse.num_genes = len(warehouse.genome[0])
+        warehouse.num_genes = len(warehouse.genome)
         return warehouse
 
+    """     for forkl in self.forklifts:
+               gene = [forkl]
+               produtosList = self.products.copy()
+               random.shuffle(produtosList)
+               for produto in produtosList:
+                   gene.append(produto)
+               warehouse.genome.append(gene)
+           warehouse.num_genes = len(warehouse.genome[0])"""
     def __str__(self):
         string = "# of forklifts: "
         string += f'{len(self.forklifts)}'

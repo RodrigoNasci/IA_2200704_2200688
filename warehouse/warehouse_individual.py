@@ -14,7 +14,7 @@ class WarehouseIndividual(IntVectorIndividual):
         self.fitness = 0
         pairs = self.problem.agent_search.pairs.copy()
         for gene in self.genome:
-            for i in range(self.num_genes-1):
+            for i in range(len(gene)-1):
                 cell = gene[i]
                 next_cell = gene[i + 1]
                 for pair in pairs:
