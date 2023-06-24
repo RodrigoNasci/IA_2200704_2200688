@@ -22,6 +22,7 @@ from warehouse.warehouse_agent_search import WarehouseAgentSearch, read_state_fr
 from warehouse.warehouse_experiments_factory import WarehouseExperimentsFactory
 from warehouse.warehouse_problemforGA import WarehouseProblemGA
 from warehouse.warehouse_state import WarehouseState
+from warehouse.warehouse_problemforSearch import WarehouseProblemSearch
 
 matplotlib.use("TkAgg")
 
@@ -317,7 +318,7 @@ class Window(tk.Tk):
             Recombination2(float(self.entry_recombination_prob.get())) if recombination_methods_index == 1 else \
                 Recombination3(float(self.entry_recombination_prob.get()))
 
-        mutation_methods_index = self.combo_recombination_methods.current()
+        mutation_methods_index = self.combo_mutation_methods.current()
         mutation_method = MutationInsert(
             float(self.entry_mutation_prob.get())) if mutation_methods_index == 0 else \
             Mutation2(float(self.entry_mutation_prob.get())) if mutation_methods_index == 1 else \
@@ -619,6 +620,68 @@ class SearchSolver(threading.Thread):
 
     def run(self):
         # TODO calculate pairs distances
+        for i in range(len(self.agent.pairs)):
+            p = self.agent.pairs[i]  # forklit para a celula 1
+
+            cell1 = copy.copy(p.cell1)
+            cell2 = copy.copy(p.cell2)
+            # alterar as coordenadas da cell1 se for diferente de um forklift
+
+            state = copy.copy(self.agent.initial_environment)
+            state.line_forklift = cell1.line
+            state.column_forklift = cell1.column
+
+            # altera as coordenadas da cell1
+            if state.matrix[cell1.line][cell1.column] != constants.FORKLIFT \
+                    and state.matrix[cell1.line][cell1.column] != constants.EXIT \
+                    and state.matrix[cell1.line][cell1.column] != constants.EMPTY:
+                if state.matrix[cell1.line][cell1.column - 1] == constants.EMPTY:
+                    state.column_forklift -= 1
+                else:
+                    state.column_forklift += 1
+
+            # altera as coordenadas da cell2
+            if state.matrix[cell2.line][cell2.column] != constants.FORKLIFT \
+                and state.matrix[cell2.line][cell2.column] != constants.EXIT \
+                    and state.matrix[cell2.line][cell2.column] != constants.EMPTY:
+                if state.matrix[cell2.line][cell2.column-1] == constants.EMPTY:
+                    cell2.column -= 1
+                else:
+                    cell2.column += 1
+
+            problem = WarehouseProblemSearch(state, cell2)
+
+            solution = self.agent.solve_problem(problem)
+
+            p.value = solution.cost
+            print(str(i) + "-" + str(p.value))
+
+        # Dar print para Problem Data
+        self.gui.text_problem.delete("1.0", "end")
+        self.gui.text_problem.insert(tk.END, str(self.gui.initial_state) + "\n" + str(self.gui.agent_search))
+
+        # TODO calculate pairs
+
+        p = self.agent.pairs[0]  # forklit para a celula 1
+
+        cell1 = copy.copy(p.cell1)
+        cell2 = copy.copy(p.cell2)
+        # alterar as coordenadas da cell1 se for diferente de um forklift
+
+        state = copy.copy(self.agent.initial_environment)
+        state.line_forklift = cell1.line
+        state.column_forklift = cell1.column
+
+        # altera as coordenadas da cell2 se for diferente da porta
+        cell2.column -= 1
+        problem = WarehouseProblemSearch(state, cell2)
+
+        solution = self.agent.solve_problem(problem)
+
+        p.value = solution.cost
+
+        # se der 4 passo esta correto e é para avançar
+        print(p.value)
 
         self.agent.search_method.stopped=True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)

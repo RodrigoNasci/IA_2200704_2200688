@@ -1,3 +1,6 @@
+import random
+
+from ga.individual import Individual
 from ga.problem import Problem
 from warehouse.warehouse_agent_search import WarehouseAgentSearch
 from warehouse.warehouse_individual import WarehouseIndividual
@@ -12,7 +15,16 @@ class WarehouseProblemGA(Problem):
 
     def generate_individual(self) -> "WarehouseIndividual":
         # TODO
-        pass
+        warehouse = WarehouseIndividual(self, 0)
+        for forkl in self.forklifts:
+            gene = [forkl]
+            produtosList = self.products.copy()
+            random.shuffle(produtosList)
+            for produto in produtosList:
+                gene.append(produto)
+            warehouse.genome.append(gene)
+        warehouse.num_genes = len(warehouse.genome[0])
+        return warehouse
 
     def __str__(self):
         string = "# of forklifts: "

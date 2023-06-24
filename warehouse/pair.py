@@ -2,8 +2,9 @@ class Pair:
     def __init__(self, cell1, cell2):
         self.cell1 = cell1
         self.cell2 = cell2
-        self.value = 0
+        self.value = abs(self.cell1.line - self.cell2.line) + abs(self.cell1.column - self.cell2.column)
         # TODO?
+
 
     def hash(self):
         return str(self.cell1.line) + "_" + str(self.cell1.column) + "_" + str(
