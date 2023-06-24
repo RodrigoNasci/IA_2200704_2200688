@@ -20,17 +20,17 @@ class WarehouseState(State[Action]):
         self.rows = rows
         self.columns = columns
 
-        """
         self.matrix = np.full([self.rows, self.columns], fill_value=0, dtype=int)
-        for j in range(self.columns):
-            self.matrix[i][j] = matrix[i][j]
-            if self.matrix[i][j] == constants.FORKLIFT:
-                self.line_forklift = i
-                self.column_forklift = j
-            if self.matrix[i][j] == constants.EXIT:
-                self.line_exit = i
-                self.column_exit = j 
-        """
+        for i in range(self.rows):
+            for j in range(self.columns):
+                self.matrix[i][j] = matrix[i][j]
+                if self.matrix[i][j] == constants.FORKLIFT:
+                    self.line_forklift = i
+                    self.column_forklift = j
+                if self.matrix[i][j] == constants.EXIT:
+                    self.line_exit = i
+                    self.column_exit = j
+
         self.matrix = matrix
 
     def can_move_up(self) -> bool:

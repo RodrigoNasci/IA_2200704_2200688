@@ -654,7 +654,7 @@ class SearchSolver(threading.Thread):
             solution = self.agent.solve_problem(problem)
 
             p.value = solution.cost
-            print(str(i) + "-" + str(p.value))
+            #print(str(i) + "-" + str(p.value))
 
         # Dar print para Problem Data
         self.gui.text_problem.delete("1.0", "end")
@@ -679,9 +679,6 @@ class SearchSolver(threading.Thread):
         solution = self.agent.solve_problem(problem)
 
         p.value = solution.cost
-
-        # se der 4 passo esta correto e é para avançar
-        print(p.value)
 
         self.agent.search_method.stopped=True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)
