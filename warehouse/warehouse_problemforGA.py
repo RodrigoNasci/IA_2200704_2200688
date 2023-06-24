@@ -23,7 +23,7 @@ class WarehouseProblemGA(Problem):
             for produto in produtosList:
                 gene.append(produto)
             warehouse.genome.append(gene)
-
+        warehouse.num_genes = len(warehouse.genome[0])
         return warehouse
 
     def __str__(self):
