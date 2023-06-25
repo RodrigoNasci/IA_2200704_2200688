@@ -653,7 +653,8 @@ class SearchSolver(threading.Thread):
 
             solution = self.agent.solve_problem(problem)
 
-            p.value = solution.cost
+            if solution is not None:
+                p.value = solution.cost
             #print(str(i) + "-" + str(p.value))
 
         # Dar print para Problem Data
@@ -678,7 +679,8 @@ class SearchSolver(threading.Thread):
 
         solution = self.agent.solve_problem(problem)
 
-        p.value = solution.cost
+        if solution is not None:
+            p.value = solution.cost
 
         self.agent.search_method.stopped=True
         self.gui.problem_ga = WarehouseProblemGA(self.agent)

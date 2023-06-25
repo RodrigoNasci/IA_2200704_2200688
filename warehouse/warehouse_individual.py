@@ -6,31 +6,75 @@ class WarehouseIndividual(IntVectorIndividual):
 
     def __init__(self, problem: "WarehouseProblem", num_genes: int):
         super().__init__(problem, num_genes)
-        self.genome = []
+        self.fitness = 0
+        self.steps = 0
+        self.exit = problem.agent_search.exit
         # TODO
 
     def compute_fitness(self) -> float:
         # TODO
+        products = self.problem.agent_search.products
+        forklifts = self.problem.agent_search.forklifts
+        paths, steps = self.obtain_all_path()
         self.fitness = 0
         pairs = self.problem.agent_search.pairs.copy()
-        for gene in self.genome:
-            for i in range(len(gene)-1):
-                cell = gene[i]
-                next_cell = gene[i + 1]
-                for pair in pairs:
-                    if (cell.line == pair.cell1.line and cell.column == pair.cell1.column and next_cell.line == pair.cell2.line and next_cell.column == pair.cell2.column) or (cell.line == pair.cell2.line and cell.column == pair.cell2.column and next_cell.line == pair.cell1.line and next_cell.column == pair.cell1.column):
-                        self.fitness += pair.value
+        last = None
+
+        for i in range(len(paths)-1):
+            if len(forklifts) == 1:
+                forklift = forklifts[0]
+            else:
+                forklift = forklifts[i]
+            aux= -1
+            for j in range(len(paths[i])):
+                product = products[paths[i][j]]
+                if i == aux:
+                    for pair in pairs:
+                        if (last == pair.cell1 and product == pair.cell2) or (last == pair.cell2 and product == pair.cell1):
+                            self.fitness += pair.value
+                            break
+                else:
+                    aux = i
+                    for pair in pairs:
+                        if (forklift == pair.cell1 and product == pair.cell2) or (forklift == pair.cell2 and produc == pair.cell1):
+                            self.fitness += pair.value
+                            break
+                last = product
+            for pair in pairs:
+                if (last == pair.cell1 and self.exit == pair.cell2) or (last == pair.cell2 and self.exit == pair.cell1):
+                    self.fitness += pair.value
+
+        for i in range(len(paths)):
+            if not paths[i]:
+                self.fitness += 100
         return self.fitness
-    # calcular os caminhos comlpletos percorridos pelos froklifts. Devolve uma lista de listas (as celulas percorridas por cada forklift)
-    # e o n max de passos necessarios para percorrer todos os caminhos (i.e, o n de celulas do caminho mais longo percorrido por um forklift)
 
     def obtain_all_path(self):
         # TODO
-        pass
+        paths = []
+        products = self.problem.agent_search.products
+        forklifts = self.problem.agent_search.forklifts
+        aux = None
+        steps = 0
+
+        for i, value in enumerate(self.genome):
+            if value >= len(products) + len(forklifts):
+                if aux is None:
+                    paths.append(self.genome[:i])
+                    aux = i
+                else:
+                    paths.append(self.genome[aux+1:i])
+                    aux = i
+                steps += 1
+        if aux is not None:
+            paths.append(self.genome[aux + 1:])
+
+        return paths, steps
+
 
     def __str__(self):
         string = 'Fitness: ' + f'{self.fitness}' + '\n'
-        #string += str (self.genome) + "\n\n"
+        string += str (self.genome) + "\n\n"
         # TODO
         return string
 

@@ -16,18 +16,19 @@ class WarehouseProblemGA(Problem):
     def generate_individual(self) -> "WarehouseIndividual":
         # TODO
 
-        warehouse = WarehouseIndividual(self, 0)
-        produtosList = self.products.copy()
+        index = len(self.products) + len(self.forklifts)
+        new_ind = WarehouseIndividual(self, index - 1)
+        random_products = random.sample(range(len(self.products)), len(self.products))
+        chunk_size = len(random_products) // len(self.forklifts)
+        chunks = [random_products[i:i + chunk_size] for i in range(0, len(random_products), chunk_size)]
+        new_ind.genome = []
+        for i, chunk in enumerate(chunks):
+            new_ind.genome.extend(chunk)
+            if i < len(self.forklifts) - 1:
+                new_ind.genome.append(index)
+                index += 1
 
-        for i in range(len(produtosList)):
-            for fort in self.forklifts:
-                gene = [fort]
-                random.shuffle(produtosList)
-                for produto in produtosList:
-                    gene.append(produto)
-            warehouse.genome.append(gene)
-
-        return warehouse
+        return new_ind
 
     def __str__(self):
         string = "# of forklifts: "
