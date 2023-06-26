@@ -90,10 +90,21 @@ class WarehouseIndividual(IntVectorIndividual):
                 genome_com_valor_produto_correto.append(gene)
                 genome_com_seperar_forklift.append(gene_forklift)
                 gene_forklift = []
+        if gene_forklift != []:
+            genome_com_seperar_forklift.append(gene_forklift)
         if len(self.problem.agent_search.forklifts) == 1:
             genome_com_seperar_forklift.append(genome_com_valor_produto_correto)
+
         string = 'Fitness: ' + f'{self.fitness}' + '\n'
         string += str (genome_com_valor_produto_correto) + "\n\n"
+        string += 'Numero de forklifts: ' + str(len(self.problem.agent_search.forklifts)) + "\n"
+        if len(self.problem.agent_search.forklifts) != 1:
+            string += 'Produtos capturados por forklift:\n'
+            for i in range(len(self.problem.agent_search.forklifts)):
+                string += 'forklift '+ str(i+1) + ': ' + str(genome_com_seperar_forklift[i]) + "\n"
+        else:
+            string += 'Produtos capturados pelo forklift 1:\n' + str(genome_com_seperar_forklift[0]) + "\n"
+
         # TODO
         return string
 

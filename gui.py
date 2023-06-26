@@ -186,7 +186,7 @@ class Window(tk.Tk):
 
         self.label_best = tk.Label(master=self.panel_best, text="Best solution: ", anchor="w", width=46)
         self.label_best.pack()
-        self.text_best = tk.Text(master=self.panel_best, state="normal", height=20, width=40)
+        self.text_best = tk.Text(master=self.panel_best, state="normal", height=20, width=50)
         self.text_best.pack()
 
         # 3 - BOTTOM PANEL --------------------------------------------------
