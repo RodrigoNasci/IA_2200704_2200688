@@ -705,20 +705,21 @@ class SolutionRunner(threading.Thread):
     def run(self):
         self.thread_running = True
         forklift_path, steps = self.best_in_run.obtain_all_path()
-        old_cell = [None] * len(forklift_path)
+        produtos = self.best_in_run.transformProduts(forklift_path)
+        old_cell = [None] * len(produtos)
         new_cells = []
         for step in range(steps - 1):
             new_cells.clear()
             if not self.thread_running:
                 return
-            for j in range(len(forklift_path)):
+            for j in range(len(produtos)):
                 if old_cell[j] is None:
-                    firs_cell = forklift_path[j][0]
+                    firs_cell = produtos[j][0]
                     old_cell[j] = firs_cell
-                if step < len(forklift_path[j]) - 1:
+                if step < len(produtos[j]) - 1:
                     if old_cell[j] not in new_cells:
                         self.state.matrix[old_cell[j].line][old_cell[j].column] = constants.EMPTY
-                    new_cell = forklift_path[j][step + 1]
+                    new_cell = produtos[j][step + 1]
                     new_cells.append(new_cell)
                     self.state.matrix[new_cell.line][new_cell.column] = constants.FORKLIFT
                     old_cell[j] = new_cell

@@ -57,7 +57,7 @@ class WarehouseIndividual(IntVectorIndividual):
         products = self.problem.agent_search.products
         forklifts = self.problem.agent_search.forklifts
         aux = None
-        steps = 0
+        steps = 1
 
         for i, value in enumerate(self.genome):
             if value >= len(products) + len(forklifts):
@@ -70,11 +70,23 @@ class WarehouseIndividual(IntVectorIndividual):
                 steps += 1
         if aux is not None:
             paths.append(self.genome[aux + 1:])
+            steps += 1
 
         if len(forklifts) == 1:
             paths.append(self.genome)
+            steps += 1
         return paths, steps
 
+    def transformProduts(self, paths):
+        products = self.problem.agent_search.products
+        product_list = []
+        for i in range(len(paths)):
+            auxprodut = []
+            for j in range(len(paths[i])):
+                product = products[paths[i][j]]
+                auxprodut.append(product)
+            product_list.append(auxprodut)
+        return product_list
 
     def __str__(self):
         genome_com_valor_produto_correto = []
