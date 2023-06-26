@@ -714,17 +714,19 @@ class SolutionRunner(threading.Thread):
                 return
             for j in range(len(produtos)):
                 if old_cell[j] is None:
+                    self.state.matrix[4][4] = constants.EMPTY
                     firs_cell = produtos[j][0]
                     old_cell[j] = firs_cell
                 if step < len(produtos[j]) - 1:
                     if old_cell[j] not in new_cells:
-                        self.state.matrix[old_cell[j].line][old_cell[j].column] = constants.EMPTY
+                        self.state.matrix[old_cell[j].line][old_cell[j].column] = constants.PRODUCT_CATCH
                     new_cell = produtos[j][step + 1]
                     new_cells.append(new_cell)
                     self.state.matrix[new_cell.line][new_cell.column] = constants.FORKLIFT
                     old_cell[j] = new_cell
                 else:
-                    self.state.matrix[old_cell[j].line][old_cell[j].column] = constants.FORKLIFT
+                    self.state.matrix[old_cell[j].line][old_cell[j].column] = constants.PRODUCT_CATCH
+                    self.state.matrix[4][4] = constants.FORKLIFT
 
                 # TODO put the catched products in black
             self.gui.queue.put((copy.deepcopy(self.state), step, False))

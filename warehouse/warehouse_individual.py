@@ -49,6 +49,8 @@ class WarehouseIndividual(IntVectorIndividual):
         for i in range(len(paths)):
             if not paths[i]:
                 self.fitness += 100
+
+        self.steps = steps
         return self.fitness
 
     def obtain_all_path(self):
@@ -68,6 +70,7 @@ class WarehouseIndividual(IntVectorIndividual):
                     paths.append(self.genome[aux+1:i])
                     aux = i
                 steps += 1
+            steps += 1
         if aux is not None:
             paths.append(self.genome[aux + 1:])
             steps += 1
