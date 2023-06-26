@@ -15,7 +15,6 @@ class WarehouseProblemGA(Problem):
 
     def generate_individual(self) -> "WarehouseIndividual":
         # TODO
-
         index = len(self.products) + len(self.forklifts)
         new_ind = WarehouseIndividual(self, index - 1)
         random_products = random.sample(range(len(self.products)), len(self.products))

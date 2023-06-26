@@ -1,3 +1,5 @@
+import copy
+
 from ga.individual_int_vector import IntVectorIndividual
 from warehouse.cell import Cell
 
@@ -20,7 +22,7 @@ class WarehouseIndividual(IntVectorIndividual):
         pairs = self.problem.agent_search.pairs.copy()
         last = None
 
-        for i in range(len(paths)-1):
+        for i in range(len(paths)):
             if len(forklifts) == 1:
                 forklift = forklifts[0]
             else:
@@ -36,7 +38,7 @@ class WarehouseIndividual(IntVectorIndividual):
                 else:
                     aux = i
                     for pair in pairs:
-                        if (forklift == pair.cell1 and product == pair.cell2) or (forklift == pair.cell2 and produc == pair.cell1):
+                        if (forklift == pair.cell1 and product == pair.cell2) or (forklift == pair.cell2 and products == pair.cell1):
                             self.fitness += pair.value
                             break
                 last = product
@@ -69,12 +71,29 @@ class WarehouseIndividual(IntVectorIndividual):
         if aux is not None:
             paths.append(self.genome[aux + 1:])
 
+        if len(forklifts) == 1:
+            paths.append(self.genome)
         return paths, steps
 
 
     def __str__(self):
+        genome_com_valor_produto_correto = []
+        genome_com_seperar_forklift = []
+        gene_forklift = []
+        for gene in self.genome:
+            if gene < len(self.problem.agent_search.products) + len(self.problem.agent_search.forklifts):
+                genecorreto = copy.copy(gene)
+                genecorreto += 1
+                genome_com_valor_produto_correto.append(genecorreto)
+                gene_forklift.append(genecorreto)
+            else:
+                genome_com_valor_produto_correto.append(gene)
+                genome_com_seperar_forklift.append(gene_forklift)
+                gene_forklift = []
+        if len(self.problem.agent_search.forklifts) == 1:
+            genome_com_seperar_forklift.append(genome_com_valor_produto_correto)
         string = 'Fitness: ' + f'{self.fitness}' + '\n'
-        string += str (self.genome) + "\n\n"
+        string += str (genome_com_valor_produto_correto) + "\n\n"
         # TODO
         return string
 
