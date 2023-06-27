@@ -10,7 +10,7 @@ class Recombination3(Recombination):
 
     def recombine(self, ind1: Individual, ind2: Individual) -> None:
         # TODO
-        #Two cut
+        #Edge Recombination
         length = len(ind1.genome)
         cycle_start = random.randint(0, length - 1)
 
@@ -43,4 +43,4 @@ class Recombination3(Recombination):
         return individual1, individual2
 
     def __str__(self):
-        return "Recombination 3 (" + f'{self.probability}' + ")"
+        return "Recombination Ciclo de Edge (" + f'{self.probability}' + ")"

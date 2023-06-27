@@ -17,21 +17,21 @@ class Recombination2(Recombination):
         indices = list(range(length))
         random.shuffle(indices)
 
-        individual1 = [-1] * length
-        individual2 = [-1] * length
+        genome_filho1 = [-1] * length
+        genome_filho2 = [-1] * length
 
         for i in range(length):
             index = indices[i]
-            individual1[index] = ind1.genome[index]
-            individual2[index] = ind2.genome[index]
+            genome_filho1[index] = ind1.genome[index]
+            genome_filho2[index] = ind2.genome[index]
 
         for i in range(length):
-            if individual1[i] == -1:
-                individual1[i] = ind2.genome[i]
-            if individual2[i] == -1:
-                individual2[i] = ind1.genome[i]
+            if genome_filho1[i] == -1:
+                genome_filho1[i] = ind2.genome[i]
+            if genome_filho2[i] == -1:
+                genome_filho2[i] = ind1.genome[i]
 
-        return individual1, individual2
+        return genome_filho1, genome_filho2
 
     def __str__(self):
-        return "Recombination 2 (" + f'{self.probability}' + ")"
+        return "Recombination Crossover por Ordem (" + f'{self.probability}' + ")"
