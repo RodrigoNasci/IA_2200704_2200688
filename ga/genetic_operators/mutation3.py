@@ -8,7 +8,7 @@ class Mutation3(Mutation):
 
     def mutate(self, ind: IntVectorIndividual) -> None:
         # TODO
-        # Invert
+        # Reverse Sequence Mutation
         ind.num_genes = len(ind.genome)
         for i in range(ind.num_genes):
             j = (ind.num_genes-1)-i
@@ -20,4 +20,4 @@ class Mutation3(Mutation):
 
 
     def __str__(self):
-        return "Mutation 3 (" + f'{self.probability}' + ")"
+        return "Mutation Mutação de Sequência Reversa (" + f'{self.probability}' + ")"

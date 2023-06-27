@@ -8,7 +8,7 @@ class Mutation2(Mutation):
 
     def mutate(self, ind: IntVectorIndividual) -> None:
         # TODO
-        # Binary
+        # swap mutation
         ind.num_genes = len(ind.genome)
         for i in range(ind.num_genes-1):
             if GeneticAlgorithm.rand.random() < self.probability:
@@ -17,4 +17,4 @@ class Mutation2(Mutation):
                 ind.genome[i+1] = aux
 
     def __str__(self):
-        return "Mutation 2 (" + f'{self.probability}' + ")"
+        return "Mutation mutação de troca de genes adjacentes (" + f'{self.probability}' + ")"
